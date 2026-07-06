@@ -4,6 +4,7 @@ from scanner.scanner import scan_ports
 from utils.helpers import parse_ports
 from http_checker.headers import analyze_headers
 from utils.helpers import security_level
+from report.report import generate_report
 
 
 def create_parser():
@@ -122,6 +123,20 @@ def main():
 
         print(f"Niveau : {niveau}")
 
+        print("\n===== GÉNÉRATION DU RAPPORT =====")
+
+    generate_report(
+        args.host,
+        args.url,
+        results,
+        http_result,
+        args.output
+    )
+
+    print(f"Rapport enregistré dans : {args.output}")
+
 
 if __name__ == "__main__":
     main()
+
+    
