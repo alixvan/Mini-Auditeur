@@ -2,6 +2,9 @@ import argparse
 
 from scanner.scanner import scan_ports
 from utils.helpers import parse_ports
+from http_checker.headers import analyze_headers
+from utils.helpers import security_level
+
 
 def create_parser():
     """
@@ -80,5 +83,45 @@ def main():
     print(f"Ports ouverts : {ouverts}")
     print(f"Ports fermés  : {fermes}")
     print(f"Ports filtrés : {filtres}")
+
+    print("\n===== ANALYSE HTTP =====\n")
+
+    http_result = analyze_headers(args.url)
+
+    if "error" in http_result:
+
+        print("Erreur :", http_result["error"])
+
+    else:
+
+        print("Code HTTP :", http_result["status"])
+
+        print()
+
+        for header, value in http_result["headers"].items():
+
+            if value:
+
+                print(f"✔ {header}")
+
+            else:
+
+                print(f"✘ {header}")
+
+        print()
+
+        print(
+            f"Score : {http_result['score']}/5"
+        )
+
+        niveau = security_level(http_result["percentage"])
+
+        print(
+            f"Soit {http_result['percentage']:.0f}%"
+        )
+
+        print(f"Niveau : {niveau}")
+
+
 if __name__ == "__main__":
     main()

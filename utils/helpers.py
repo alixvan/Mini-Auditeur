@@ -20,3 +20,17 @@ def parse_ports(port_range):
         raise ValueError(
             "Format invalide. Utilisez par exemple : 20-100"
         )
+    
+
+def security_level(score):
+
+    if score >= 80:
+        return "EXCELLENT"
+
+    if score >= 60:
+        return "BON"
+
+    if score >= 40:
+        return "MOYEN"
+
+    return "FAIBLE"    
