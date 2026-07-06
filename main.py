@@ -1,6 +1,7 @@
 import argparse
 
 from scanner.tcp import scan_port
+from utils.helpers import parse_ports
 
 def create_parser():
     """
@@ -55,6 +56,17 @@ def main():
     port, status = scan_port(args.host, 80)
 
     print(f"Port {port} : {status}")
+
+    
+    print("\n===== SCAN EN COURS =====")
+
+    ports = parse_ports(args.ports)
+
+    for port in ports:
+
+        numero, statut = scan_port(args.host, port)
+
+        print(f"Port {numero} : {statut}")
 
 
 if __name__ == "__main__":
