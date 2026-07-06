@@ -1,6 +1,6 @@
 import argparse
 
-from scanner.tcp import scan_port
+from scanner.scanner import scan_ports
 from utils.helpers import parse_ports
 
 def create_parser():
@@ -53,21 +53,32 @@ def main():
 
     print("\n===== TEST D'UN PORT =====")
 
-    port, status = scan_port(args.host, 80)
+    results = scan_ports(args.host, [80])
 
-    print(f"Port {port} : {status}")
+    for port, status in results:
+        print(f"Port {port} : {status}")
 
     
     print("\n===== SCAN EN COURS =====")
 
     ports = parse_ports(args.ports)
 
-    for port in ports:
+    results = scan_ports(args.host, ports)
 
-        numero, statut = scan_port(args.host, port)
+    print("\n===== PORTS OUVERTS =====\n")
 
-        print(f"Port {numero} : {statut}")
+    for numero, statut in results:
 
+        if statut == "OUVERT":
+           print(f"Port {numero:<5} : {statut}")
 
+    ouverts = sum(1 for _, statut in results if statut == "OUVERT")
+    fermes = sum(1 for _, statut in results if statut == "FERMÉ")
+    filtres = sum(1 for _, statut in results if statut == "FILTRÉ")
+
+    print("\n===== STATISTIQUES =====")
+    print(f"Ports ouverts : {ouverts}")
+    print(f"Ports fermés  : {fermes}")
+    print(f"Ports filtrés : {filtres}")
 if __name__ == "__main__":
     main()
