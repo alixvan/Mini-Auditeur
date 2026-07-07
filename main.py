@@ -5,6 +5,7 @@ from utils.helpers import parse_ports
 from http_checker.headers import analyze_headers
 from utils.helpers import security_level
 from report.report import generate_report
+from tls.tls import check_tls
 
 
 def create_parser():
@@ -68,6 +69,7 @@ def main():
     ports = parse_ports(args.ports)
 
     results = scan_ports(args.host, ports)
+    
 
     print("\n===== PORTS OUVERTS =====\n")
 
@@ -84,6 +86,7 @@ def main():
     print(f"Ports ouverts : {ouverts}")
     print(f"Ports fermés  : {fermes}")
     print(f"Ports filtrés : {filtres}")
+
 
     print("\n===== ANALYSE HTTP =====\n")
 
@@ -123,7 +126,27 @@ def main():
 
         print(f"Niveau : {niveau}")
 
-        print("\n===== GÉNÉRATION DU RAPPORT =====")
+
+    print("\n===== VÉRIFICATION TLS =====\n")
+
+    tls_result = check_tls(args.host)
+
+    if tls_result["valid"]:
+
+        print("Certificat valide")
+
+        print(f"Émetteur : {tls_result['issuer']}")
+
+        print(f"Expiration : {tls_result['expires']}")
+
+        print(f"Jours restants : {tls_result['days_left']}")
+
+    else:
+
+        print("Erreur :", tls_result["error"])
+
+
+    print("\n===== GÉNÉRATION DU RAPPORT =====")
 
     generate_report(
         args.host,

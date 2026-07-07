@@ -1,15 +1,17 @@
 # Rapport d'audit de sécurité
 
-**Date :** 06/07/2026 22:27:06
+**Date :** 07/07/2026 11:22:22
 
 **Cible :** scanme.nmap.org
+
+**URL analysée :** http://scanme.nmap.org
 
 ---
 
 ## Scanner TCP
 
 - Port 20 : FERMÉ
-- Port 21 : FERMÉ
+- Port 21 : OUVERT
 - Port 22 : OUVERT
 - Port 23 : FERMÉ
 - Port 24 : FERMÉ
@@ -92,8 +94,8 @@
 
 ### Statistiques
 
-- Ports ouverts : 2
-- Ports fermés : 79
+- Ports ouverts : 3
+- Ports fermés : 78
 - Ports filtrés : 0
 
 ---
@@ -113,4 +115,4 @@ Score : 0/5
 
 ---
 
-Rapport généré automatiquement par MiniAuditeur.
+Rapport généré automatiquement par Mini-Auditeur.
