@@ -1,39 +1,28 @@
 
 # Rapport d'audit de sécurité
 
-**Date :** 07/07/2026 15:53:36
+**Date :** 07/07/2026 19:42:07
 
 **Cible :** scanme.nmap.org
 
-**URL analysée :** https://github.com
+**URL analysée :** http://127.0.0.1:5000
 
 ---
 
 ## Scanner TCP
 
-- Port 21 : OUVERT
 - Port 22 : OUVERT
 - Port 80 : OUVERT
 ### Statistiques
 
-- Ports ouverts : 3
+- Ports ouverts : 2
 - Ports fermés : 0
-- Ports filtrés : 78
+- Ports filtrés : 79
 
 ---
 
 ## Analyse HTTP
 
-Code HTTP : 200
-
-✔ Strict-Transport-Security
-✔ Content-Security-Policy
-✔ X-Frame-Options
-✔ X-Content-Type-Options
-✔ Referrer-Policy
-
-Score : 5/5
-(100%)
 
 ---
 

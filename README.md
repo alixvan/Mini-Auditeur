@@ -41,11 +41,29 @@ Calcul d'un score de sécurité.
 - Nombre de jours restants
 - Autorité de certification
 
+### Démarrer le serveur local
+
+```bash
+cd serveur_local
+python app.py
+
+
 ### Rapport
 
 Génération automatique d'un rapport Markdown.
 
 ---
+
+
+**Exécution du Mini Auditeur** :
+
+```markdown
+```bash
+python main.py `
+--host scanme.nmap.org `
+--ports 20-100 `
+--url http://127.0.0.1:5000
+
 
 ## Prérequis
 
@@ -88,10 +106,10 @@ pip install -r requirements.txt
 Exemple :
 
 ```bash
-python main.py ^
---host scanme.nmap.org ^
---ports 20-100 ^
---url http://scanme.nmap.org ^
+python main.py `
+--host scanme.nmap.org `
+--ports 20-100 `
+--url http://scanme.nmap.org `
 --output rapports/rapport.md
 ```
 
