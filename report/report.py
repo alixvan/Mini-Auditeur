@@ -56,35 +56,13 @@ def generate_report(
 
         report.write("## Analyse HTTP\n\n")
 
-        if "error" in http_result:
+        if http_result is None:
+
+            report.write("Analyse HTTP non effectuée.\n")
+
+        elif "error" in http_result:
 
             report.write(f"Erreur : {http_result['error']}\n")
-
-        else:
-
-            report.write(
-                f"Code HTTP : {http_result['status']}\n\n"
-            )
-
-            for header, value in http_result["headers"].items():
-
-                if value:
-
-                    report.write(f"✔ {header}\n")
-
-                else:
-
-                    report.write(f"✘ {header}\n")
-
-            report.write("\n")
-
-            report.write(
-                f"Score : {http_result['score']}/5\n"
-            )
-
-            report.write(
-                f"({http_result['percentage']:.0f}%)\n"
-            )
 
         report.write("\n---\n\n")
 

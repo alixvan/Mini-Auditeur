@@ -16,7 +16,19 @@ def analyze_headers(url):
 
     try:
 
-        response = requests.get(url, timeout=5)
+        headers = {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 Chrome/138.0 Safari/537.36"
+            )
+        }
+
+        response = requests.get(
+            url,
+            headers=headers,
+            timeout=5,
+            allow_redirects=True
+        )
 
         headers = response.headers
 
@@ -53,13 +65,13 @@ def analyze_headers(url):
             "error": "Timeout"
         }
 
-    except requests.exceptions.ConnectionError as e:
-
-        print("\nERREUR COMPLÈTE :")
-        print(e)
+    except requests.exceptions.ConnectionError:
 
         return {
-            "error": str(e)
+            "error": (
+                "Le serveur a fermé la connexion. "
+                "Cette cible ne permet pas l'analyse HTTP via requests."
+            )
         }
 
     except Exception as e:

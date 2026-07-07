@@ -37,8 +37,8 @@ def create_parser():
 
     parser.add_argument(
         "--url",
-        required=True,
-        help="URL à analyser"
+        required=False,
+        help="URL à analyser (optionnelle)"
     )
 
     parser.add_argument(
@@ -57,19 +57,14 @@ def main():
     parser = create_parser()
 
     args = parser.parse_args()
+    if not args.url:
+        args.url = f"https://{args.host}"
 
     print("\n===== PARAMÈTRES REÇUS =====")
 
     print(f"Cible : {args.host}")
     print(f"Ports : {args.ports}")
     print(f"URL : {args.url}")
-
-    print("\n===== TEST D'UN PORT =====")
-
-    results = scan_ports(args.host, [80])
-
-    for port, status in results:
-        print(f"Port {port} : {status}")
 
     
     print("\n===== SCAN EN COURS =====")
@@ -100,65 +95,70 @@ def main():
     print(f"Ports ouverts : {ouverts}")
     print(f"Ports fermés  : {fermes}")
     print(f"Ports filtrés : {filtres}")
+    print(f"URL utilisée : {args.url}")
 
 
-    print("\n===== ANALYSE HTTP =====\n")
+    http_result = None
 
-    http_result = analyze_headers(args.url)
+    if args.url:
 
-    if "error" in http_result:
+        print("\n===== ANALYSE HTTP =====\n")
 
-        print("Erreur :", http_result["error"])
+        http_result = analyze_headers(args.url)
 
-    else:
+        if "error" in http_result:
 
-        print("Code HTTP :", http_result["status"])
+            print("Erreur :", http_result["error"])
 
-        print()
+        else:
 
-        for header, value in http_result["headers"].items():
+            print("Code HTTP :", http_result["status"])
+            print()
 
-            if value:
+            for header, value in http_result["headers"].items():
 
-                print(f"✔ {header}")
+                if value:
+                    print(f"✔ {header}")
+                else:
+                    print(f"✘ {header}")
 
-            else:
+            print()
+            print(f"Score : {http_result['score']}/5")
 
-                print(f"✘ {header}")
+            niveau = security_level(http_result["percentage"])
 
-        print()
-
-        print(
-            f"Score : {http_result['score']}/5"
-        )
-
-        niveau = security_level(http_result["percentage"])
-
-        print(
-            f"Soit {http_result['percentage']:.0f}%"
-        )
-
-        print(f"Niveau : {niveau}")
-
-
-    print("\n===== VÉRIFICATION TLS =====\n")
-
-    tls_result = check_tls(args.url)
-
-    if tls_result["valid"]:
-
-        print("Certificat valide")
-
-        print(f"Émetteur : {tls_result['issuer']}")
-
-        print(f"Expiration : {tls_result['expires']}")
-
-        print(f"Jours restants : {tls_result['days_left']}")
+            print(f"Soit {http_result['percentage']:.0f}%")
+            print(f"Niveau : {niveau}")
 
     else:
 
-        print("Erreur :", tls_result["error"])
+        print("\n===== ANALYSE HTTP =====")
+        print("Analyse ignorée (aucune URL fournie).")
 
+
+    tls_result = None
+
+    if args.url:
+
+        print("\n===== VÉRIFICATION TLS =====\n")
+
+        tls_result = check_tls(args.url)
+
+        if tls_result["valid"]:
+
+            print("Certificat valide")
+            print(f"Émetteur : {tls_result['issuer']}")
+            print(f"Expiration : {tls_result['expires']}")
+            print(f"Jours restants : {tls_result['days_left']}")
+
+        else:
+
+            print("Erreur :", tls_result["error"])
+
+    else:
+
+        print("\n===== VÉRIFICATION TLS =====")
+        print("Vérification ignorée (aucune URL fournie).")
 
     print("\n===== GÉNÉRATION DU RAPPORT =====")
 

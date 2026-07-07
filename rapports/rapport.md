@@ -1,11 +1,11 @@
 
 # Rapport d'audit de sécurité
 
-**Date :** 07/07/2026 15:49:17
+**Date :** 07/07/2026 15:53:36
 
 **Cible :** scanme.nmap.org
 
-**URL analysée :** https://scanme.nmap.org
+**URL analysée :** https://github.com
 
 ---
 
@@ -24,7 +24,16 @@
 
 ## Analyse HTTP
 
-Erreur : ('Connection aborted.', ConnectionResetError(10054, 'Une connexion existante a dû être fermée par l’hôte distant', None, 10054, None))
+Code HTTP : 200
+
+✔ Strict-Transport-Security
+✔ Content-Security-Policy
+✔ X-Frame-Options
+✔ X-Content-Type-Options
+✔ Referrer-Policy
+
+Score : 5/5
+(100%)
 
 ---
 
