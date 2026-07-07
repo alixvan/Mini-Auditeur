@@ -80,15 +80,15 @@ def generate_report(
 
                     report.write(f"✘ {header}\n")
 
-                    report.write("\n")
+            report.write("\n")
 
-                    report.write(
-                        f"Score : {http_result['score']}/5\n"
-                    )
+            report.write(
+                f"Score : {http_result['score']}/5\n"
+            )
 
-                    report.write(
-                        f"Soit {http_result['percentage']:.0f}%\n"
-                    )
+            report.write(
+                f"Soit {http_result['percentage']:.0f}%\n"
+            )
 
         report.write("\n---\n\n")
 

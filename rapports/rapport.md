@@ -1,7 +1,7 @@
 
 # Rapport d'audit de sécurité
 
-**Date :** 07/07/2026 20:52:41
+**Date :** 07/07/2026 21:46:12
 
 **Cible :** 127.0.0.1
 
@@ -22,6 +22,16 @@
 
 ## Analyse HTTP
 
+Code HTTP : 200
+
+✔ Strict-Transport-Security
+✘ Content-Security-Policy
+
+Score : 4/5
+Soit 80%
+✔ X-Frame-Options
+✔ X-Content-Type-Options
+✔ Referrer-Policy
 
 ---
 
