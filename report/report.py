@@ -64,6 +64,32 @@ def generate_report(
 
             report.write(f"Erreur : {http_result['error']}\n")
 
+        else:
+
+            report.write(
+                f"Code HTTP : {http_result['status']}\n\n"
+            )
+
+            for header, value in http_result["headers"].items():
+
+                if value:
+
+                    report.write(f"✔ {header}\n")
+
+                else:
+
+                    report.write(f"✘ {header}\n")
+
+                    report.write("\n")
+
+                    report.write(
+                        f"Score : {http_result['score']}/5\n"
+                    )
+
+                    report.write(
+                        f"Soit {http_result['percentage']:.0f}%\n"
+                    )
+
         report.write("\n---\n\n")
 
         report.write("Rapport généré automatiquement par Mini-Auditeur.\n")
