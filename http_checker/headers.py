@@ -53,10 +53,13 @@ def analyze_headers(url):
             "error": "Timeout"
         }
 
-    except requests.exceptions.ConnectionError:
+    except requests.exceptions.ConnectionError as e:
+
+        print("\nERREUR COMPLÈTE :")
+        print(e)
 
         return {
-            "error": "Impossible de joindre le serveur"
+            "error": str(e)
         }
 
     except Exception as e:

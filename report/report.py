@@ -16,6 +16,8 @@ def generate_report(
 
     with open(output_file, "w", encoding="utf-8") as report:
 
+        report.write("\n")
+        
         report.write("# Rapport d'audit de sécurité\n\n")
 
         report.write(f"**Date :** {now.strftime('%d/%m/%Y %H:%M:%S')}\n\n")
@@ -32,13 +34,18 @@ def generate_report(
         fermes = 0
         filtres = 0
 
-        for port, status in port_results:
+    for port, status in port_results:
 
-            if status == "OUVERT":
+        if status == "OUVERT":
+            ouverts += 1
+            report.write(f"- Port {port} : {status}\n")
 
-                report.write(f"- Port {port} : {status}\n")
+        elif status == "FERMÉ":
+            fermes += 1
 
-        report.write("\n")
+        elif status == "FILTRÉ":
+            filtres += 1
+
 
         report.write("### Statistiques\n\n")
 
