@@ -1,9 +1,9 @@
 
 # Rapport d'audit de sécurité
 
-**Date :** 07/07/2026 19:42:07
+**Date :** 07/07/2026 20:21:13
 
-**Cible :** scanme.nmap.org
+**Cible :** 127.0.0.1
 
 **URL analysée :** http://127.0.0.1:5000
 
@@ -11,13 +11,12 @@
 
 ## Scanner TCP
 
-- Port 22 : OUVERT
-- Port 80 : OUVERT
+- Port 5000 : OUVERT
 ### Statistiques
 
-- Ports ouverts : 2
+- Ports ouverts : 1
 - Ports fermés : 0
-- Ports filtrés : 79
+- Ports filtrés : 0
 
 ---
 

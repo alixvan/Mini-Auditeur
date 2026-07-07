@@ -1,11 +1,23 @@
 def parse_ports(port_range):
     """
-    Convertit une chaîne comme '20-100'
+    Convertit un port unique (ex : 80)
+    ou une plage de ports (ex : 20-100)
     en une liste de ports.
     """
 
     try:
 
+        # Cas d'un seul port
+        if "-" not in port_range:
+
+            port = int(port_range)
+
+            if port < 1 or port > 65535:
+                raise ValueError
+
+            return [port]
+
+        # Cas d'une plage
         start, end = port_range.split("-")
 
         start = int(start)
@@ -14,14 +26,17 @@ def parse_ports(port_range):
         if start > end:
             raise ValueError
 
-        return range(start, end + 1)
+        if start < 1 or end > 65535:
+            raise ValueError
+
+        return list(range(start, end + 1))
 
     except ValueError:
+
         raise ValueError(
-            "Format invalide. Utilisez par exemple : 20-100"
+            "Format invalide. Utilisez par exemple : 80 ou 20-100"
         )
     
-
 def security_level(score):
 
     if score >= 80:
@@ -33,4 +48,4 @@ def security_level(score):
     if score >= 40:
         return "MOYEN"
 
-    return "FAIBLE"    
+    return "FAIBLE"
