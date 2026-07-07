@@ -1,28 +1,40 @@
 import ssl
 import socket
 from datetime import datetime
+from urllib.parse import urlparse
 
 
-def check_tls(host, port=443):
+def check_tls(url):
     """
-    Vérifie le certificat TLS d'un serveur.
+    Vérifie le certificat TLS d'une URL HTTPS.
     """
+
+    parsed = urlparse(url)
+
+    if parsed.scheme != "https":
+
+        return {
+            "valid": False,
+            "error": "Le site n'utilise pas HTTPS."
+        }
+
+    host = parsed.hostname
 
     context = ssl.create_default_context()
 
     try:
 
-        with socket.create_connection((host, port), timeout=5) as sock:
+        with socket.create_connection((host, 443), timeout=5) as sock:
 
             with context.wrap_socket(
                 sock,
                 server_hostname=host
             ) as secure_socket:
 
-                certificate = secure_socket.getpeercert()
+                cert = secure_socket.getpeercert()
 
         expiration = datetime.strptime(
-            certificate["notAfter"],
+            cert["notAfter"],
             "%b %d %H:%M:%S %Y %Z"
         )
 
@@ -30,27 +42,35 @@ def check_tls(host, port=443):
 
         days_left = (expiration - today).days
 
-        issuer = certificate["issuer"]
+        issuer = ""
 
-        issuer_name = ""
+        for group in cert["issuer"]:
 
-        for item in issuer:
-
-            for key, value in item:
+            for key, value in group:
 
                 if key == "organizationName":
 
-                    issuer_name = value
+                    issuer = value
 
         return {
 
             "valid": True,
 
-            "issuer": issuer_name,
+            "issuer": issuer,
 
             "expires": expiration.strftime("%d/%m/%Y"),
 
             "days_left": days_left
+
+        }
+
+    except socket.timeout:
+
+        return {
+
+            "valid": False,
+
+            "error": "Connexion TLS expirée (timeout)."
 
         }
 
@@ -60,14 +80,8 @@ def check_tls(host, port=443):
 
             "valid": False,
 
-            "error": "Certificat invalide"
+            "error": "Certificat SSL invalide."
 
-        }
-    except socket.timeout:
-
-        return {
-            "valid": False,
-            "error": "Le serveur n'a pas répondu avant le délai imparti."
         }
 
     except Exception as e:

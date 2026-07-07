@@ -1,4 +1,5 @@
 import argparse
+import time 
 
 from scanner.scanner import scan_ports
 from utils.helpers import parse_ports
@@ -6,6 +7,11 @@ from http_checker.headers import analyze_headers
 from utils.helpers import security_level
 from report.report import generate_report
 from tls.tls import check_tls
+
+from colorama import Fore
+from colorama import init
+
+init(autoreset=True)
 
 
 def create_parser():
@@ -46,6 +52,8 @@ def create_parser():
 
 def main():
 
+    start = time.perf_counter()
+
     parser = create_parser()
 
     args = parser.parse_args()
@@ -69,14 +77,20 @@ def main():
     ports = parse_ports(args.ports)
 
     results = scan_ports(args.host, ports)
-    
+
 
     print("\n===== PORTS OUVERTS =====\n")
 
     for numero, statut in results:
 
         if statut == "OUVERT":
-           print(f"Port {numero:<5} : {statut}")
+            print(Fore.GREEN + f"Port {numero:<5} : {statut}")
+
+        elif statut == "FERMÉ":
+            print(Fore.RED + f"Port {numero:<5} : {statut}")
+
+        else:
+            print(Fore.YELLOW + f"Port {numero:<5} : {statut}")
 
     ouverts = sum(1 for _, statut in results if statut == "OUVERT")
     fermes = sum(1 for _, statut in results if statut == "FERMÉ")
@@ -129,7 +143,7 @@ def main():
 
     print("\n===== VÉRIFICATION TLS =====\n")
 
-    tls_result = check_tls(args.host)
+    tls_result = check_tls(args.url)
 
     if tls_result["valid"]:
 
@@ -158,6 +172,9 @@ def main():
 
     print(f"Rapport enregistré dans : {args.output}")
 
+    end = time.perf_counter()
+
+    print(f"\nAudit terminé en {end-start:.2f} secondes.")
 
 if __name__ == "__main__":
     main()

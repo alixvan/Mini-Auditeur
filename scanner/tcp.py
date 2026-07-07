@@ -25,8 +25,12 @@ def scan_port(host, port, timeout=1):
         if result == 0:
             status = "OUVERT"
 
-        else:
+        elif result in (111, 61, 10061):
+
             status = "FERMÉ"
+
+        else:
+            status = "FILTRÉ"
 
     except socket.timeout:
         status = "FILTRÉ"

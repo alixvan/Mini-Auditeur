@@ -34,16 +34,9 @@ def generate_report(
 
         for port, status in port_results:
 
-            report.write(f"- Port {port} : {status}\n")
-
             if status == "OUVERT":
-                ouverts += 1
 
-            elif status == "FERMÉ":
-                fermes += 1
-
-            elif status == "FILTRÉ":
-                filtres += 1
+                report.write(f"- Port {port} : {status}\n")
 
         report.write("\n")
 
